@@ -27,9 +27,20 @@ public class UserRegisterException extends RuntimeException {
 	private int StatusCode;
 	private String Statusmessage;
 	
+	/**
+	 * 
+	 * @return error response
+	 */
 	public Response getErrorResponse() {
+		log.error("Error msg:" + Statusmessage);
 		return getErrorResponse(Locale.getDefault());
 	}
+	
+	/**
+	 * 
+	 * @param locale : locale
+	 * @return : Response type
+	 */
 	public Response getErrorResponse(Locale locale) {
 		log.error("Error msg:" + Statusmessage);
 		ErrorResponse err = new ErrorResponse(StatusCode, Statusmessage, getStackTrace());

@@ -27,6 +27,11 @@ public class InsuranceCategoryService implements IInsuranceCategoryService {
 	@Autowired
 	TokenUtil tokenUtil;
 	
+	/**
+	 * To add insurance data
+	 * @param : Get insurance data from InsuranceDTO
+	 * @return : Response
+	 */
 	@Override
 	public Response addInsuranceData(InsuranceDTO insuranceDTO) {
 		Optional<InsuranceCategoryEntity> isPresent = insuranceCategoryRepository.findByInsuranceCode(insuranceDTO.getInsuranceCode());
@@ -42,6 +47,11 @@ public class InsuranceCategoryService implements IInsuranceCategoryService {
 		}
 	}
 
+	/**
+	 * To update insurance data
+	 * @param : Get insurance data from InsuranceDTO, token: JWT with id
+	 * @return : Response
+	 */
 	@Override
 	public Response updateInsuranceData(String token, InsuranceDTO insuranceDTO) {
 		long id = tokenUtil.decodeToken(token);
@@ -62,6 +72,11 @@ public class InsuranceCategoryService implements IInsuranceCategoryService {
 		}
 	}
 
+	/**
+	 * To get insurance data
+	 * @param token: JWT with id
+	 * @return : List<InsuranceCategoryEntity>
+	 */
 	@Override
 	public List<InsuranceCategoryEntity> getInsuranceData(String token) {
 		long id = tokenUtil.decodeToken(token);
@@ -77,6 +92,11 @@ public class InsuranceCategoryService implements IInsuranceCategoryService {
 		}
 	}
 
+	/**
+	 * To delete insurance data
+	 * @param token: JWT with id
+	 * @return : Response
+	 */
 	@Override
 	public Response deleteInsuranceData(String token) {
 		long id = tokenUtil.decodeToken(token);

@@ -29,6 +29,11 @@ public class UserService implements IUserService {
 	@Autowired
 	TokenUtil tokenUtil;
 	
+	/**
+	 * To add user data
+	 * @param userDTO: To get user data from UserDTO
+	 * @return : Response
+	 */
 	@Override
 	public Response addUser(UserDTO userDTO) {
 		Optional<UserEntity> isPresent = userRepository.findByMobileNumber(userDTO.getMobileNumber());
@@ -44,6 +49,11 @@ public class UserService implements IUserService {
 		}
 	}
 
+	/**
+	 * To update user data
+	 * @param token: JWT with id, userDTO: To get user data from UserDTO
+	 * @return : Response
+	 */
 	@Override
 	public Response updateUser(String token, UserDTO userDTO) {
 		long id = tokenUtil.decodeToken(token);
@@ -70,6 +80,11 @@ public class UserService implements IUserService {
 		}
 	}
 
+	/**
+	 * To get all user data
+	 * @param token: JWT with id
+	 * @return : List<UserEntity>
+	 */
 	@Override
 	public List<UserEntity> getUsers(String token) {
 		Long id = tokenUtil.decodeToken(token);
@@ -85,6 +100,11 @@ public class UserService implements IUserService {
 		}
 	}
 
+	/**
+	 * To delete user data
+	 * @param token: JWT with id
+	 * @return : Response
+	 */
 	@Override
 	public Response deleteUser(String token) {
 		Long id = tokenUtil.decodeToken(token);

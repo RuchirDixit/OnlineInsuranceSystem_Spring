@@ -31,30 +31,51 @@ public class InsuranceCategoryController {
 	@Autowired
 	private IInsuranceCategoryService insuranceService;
 	
+	/**
+	 * To add insurance category
+	 * @param insuranceDTO : DTO to enter insurance details
+	 * @return : ResponseEntity<Response>
+	 */
 	@PostMapping("/create")
 	public ResponseEntity<Response> createUser(@RequestBody InsuranceDTO insuranceDTO){
-		log.debug("Create: " + insuranceDTO);
+		log.debug("Create InsuranceCategory: " + insuranceDTO);
 		Response response = insuranceService.addInsuranceData(insuranceDTO);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
+	/**
+	 * To update insurance category
+	 * @param token : JWT with insurance id
+	 * @param insuranceDTO : DTO to enter insurance details
+	 * @return : ResponseEntity<Response>
+	 */
 	@PutMapping("/update/{token}")
 	public ResponseEntity<Response> updateContact(@PathVariable String token,@RequestBody InsuranceDTO insuranceDTO){
-		log.debug("Update: " + insuranceDTO);
+		log.debug("Update InsuranceCategory: " + insuranceDTO);
 		Response response = insuranceService.updateInsuranceData(token,insuranceDTO);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
+	/**
+	 * To get all insurance category
+	 * @param token : JWT with insurance id
+	 * @return: ResponseEntity<List<?>>
+	 */
 	@GetMapping("/get/{token}")
 	public ResponseEntity<List<?>> getAllContacts(@PathVariable String token){
-		log.debug("Get");
+		log.debug("Get InsuranceCategory");
 		List<InsuranceCategoryEntity> response = insuranceService.getInsuranceData(token);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	
+	/**
+	 * To delete insurance category
+	 * @param token: JWT with insurance id
+	 * @return: ResponseEntity<Response>
+	 */
 	@DeleteMapping("/delete/{token}")
 	public ResponseEntity<Response> deleteContact(@PathVariable String token){
-		log.debug("Delete");
+		log.debug("Delete InsuranceCategory");
 		Response response = insuranceService.deleteInsuranceData(token);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}

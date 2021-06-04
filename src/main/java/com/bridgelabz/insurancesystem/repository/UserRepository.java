@@ -9,5 +9,10 @@ import com.bridgelabz.insurancesystem.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+	/**
+	 * To find data by mobile number with value passed as parameter
+	 * @param mobileNumber : To search for
+	 * @return : Optional<UserEntity>
+	 */
 	Optional<UserEntity> findByMobileNumber(Long mobileNumber);
 }

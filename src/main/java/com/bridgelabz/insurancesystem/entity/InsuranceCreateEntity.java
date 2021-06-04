@@ -38,7 +38,13 @@ public @Data class InsuranceCreateEntity {
 	private String status;
 	private LocalDateTime registeredDate = LocalDateTime.now();
 	private LocalDateTime updatedDate;
+	private boolean claimed=false;
 	
 	public InsuranceCreateEntity() {}
+
+	public boolean getClaimed() {
+		// TODO Auto-generated method stub
+		return claimed;
+	}
 	
 }

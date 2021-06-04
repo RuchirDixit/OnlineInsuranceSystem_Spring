@@ -29,6 +29,11 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 	
+	/**
+	 * To add new user
+	 * @param userDTO : To get user data from UserDTO
+	 * @return: ResponseEntity<Response>
+	 */
 	@PostMapping("/createUser")
 	public ResponseEntity<Response> createUser(@RequestBody UserDTO userDTO){
 		log.debug("Create User : " + userDTO);
@@ -36,6 +41,12 @@ public class UserController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
+	/**
+	 * To update user data
+	 * @param token : JWT data with userid
+	 * @param userDTO : To get user data from UserDTO
+	 * @return : ResponseEntity<Response>
+	 */
 	@PutMapping("/updateUser/{token}")
 	public ResponseEntity<Response> updateContact(@PathVariable String token,@RequestBody UserDTO userDTO){
 		log.debug("Update contact : " + userDTO);
@@ -43,6 +54,11 @@ public class UserController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
+	/**
+	 * To get all users
+	 * @param token : JWT data with userid
+	 * @return : ResponseEntity<List<?>>
+	 */
 	@GetMapping("/getUsers/{token}")
 	public ResponseEntity<List<?>> getAllContacts(@PathVariable String token){
 		log.debug("Get all contacts");
@@ -50,6 +66,11 @@ public class UserController {
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 	
+	/**
+	 * To delete user
+	 * @param token : JWT data with userid
+	 * @return :ResponseEntity<Response>
+	 */
 	@DeleteMapping("/deleteUser/{token}")
 	public ResponseEntity<Response> deleteContact(@PathVariable String token){
 		log.debug("Delete contact");

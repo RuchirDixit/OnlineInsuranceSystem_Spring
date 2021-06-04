@@ -9,12 +9,16 @@ import com.bridgelabz.insurancesystem.util.Response;
 
 public interface IInsuranceCategoryService {
 
+	// To add insurance data
 	Response addInsuranceData(InsuranceDTO insuranceDTO);
 
+	// To uodate insurance data
 	Response updateInsuranceData(String token, InsuranceDTO insuranceDTO);
 
+	// To get insurance data
 	List<InsuranceCategoryEntity> getInsuranceData(String token);
 
+	// To delete insurance data
 	Response deleteInsuranceData(String token);
 
 }
