@@ -41,6 +41,11 @@ public class InsuranceCreateService implements IInsuranceCreateService{
 	@Autowired
 	ModelMapper modelMapper;
 	
+	Long userId=0L;
+	Long insuranceId=0L;
+	UserEntity userEntity=null;
+	InsuranceCategoryEntity categoryEntity=null;
+	
 	/**
 	 * To add insurance data
 	 * @param insuranceDTO: To get data from InsuranceCreateDTO
@@ -64,42 +69,11 @@ public class InsuranceCreateService implements IInsuranceCreateService{
 	@Override
 	public List<InsuranceResponse> getData(String token) {
 		long id = tokenUtil.decodeToken(token);
+		System.out.println("ID : " + id);
 		Optional<InsuranceCreateEntity> isDataPresent = insuranceCreateRepository.findById(id);
-		Long userId=0L;
-		Long insuranceId=0L;
-		UserEntity userEntity=null;
-		InsuranceCategoryEntity categoryEntity=null;
-		List<InsuranceResponse> insuranceCreateList = new ArrayList<>();
 		if(isDataPresent.isPresent()) {
-			List<InsuranceCreateEntity> createList =  insuranceCreateRepository.findAll();
-			for(InsuranceCreateEntity element : createList) {
-				List<Long> userIds = element.getUserId();
-				List<Long> insuranceIds = element.getInsuranceId();
-				for(Long uid : userIds) {
-					userId=uid;
-				}
-				for(Long iid : insuranceIds) {
-					insuranceId=iid;
-				}
-				Optional<UserEntity> isUserPresent = userRepository.findById(userId);
-				if(isUserPresent.isPresent()) {
-					userEntity = isUserPresent.get();
-				}
-				else {
-					log.error("User not found.");
-					throw new UserRegisterException(404,"user Not found");
-				}
-				Optional<InsuranceCategoryEntity> isCategoryPresent = insuranceCategoryRepository.findById(insuranceId);
-				if(isCategoryPresent.isPresent()) {
-					categoryEntity = isCategoryPresent.get();
-				}
-				else {
-					log.error("Category not found.");
-					throw new UserRegisterException(404,"Category Not found");
-				}
-				insuranceCreateList.add(new InsuranceResponse(userEntity, categoryEntity, id,element.getMonthPeriod(),element.getStatus(),element.getClaimed()));
-			}					
-			return insuranceCreateList;
+			List<InsuranceCreateEntity> createList =  insuranceCreateRepository.findAll();		
+			return getInsuranceList(createList,id);
 			
 		}
 		else {
@@ -118,41 +92,9 @@ public class InsuranceCreateService implements IInsuranceCreateService{
 	public List<InsuranceResponse> getDataByStatus(String token, String status) {
 		long id = tokenUtil.decodeToken(token);
 		Optional<InsuranceCreateEntity> isDataPresent = insuranceCreateRepository.findById(id);
-		Long userId=0L;
-		Long insuranceId=0L;
-		UserEntity userEntity=null;
-		InsuranceCategoryEntity categoryEntity=null;
-		List<InsuranceResponse> insuranceStatusList = new ArrayList<>();
 		if(isDataPresent.isPresent()) {
-			List<InsuranceCreateEntity> statusList =  insuranceCreateRepository.findByStatus(status);
-			for(InsuranceCreateEntity element : statusList) {
-				List<Long> userIds = element.getUserId();
-				List<Long> insuranceIds = element.getInsuranceId();
-				for(Long uid : userIds) {
-					userId=uid;
-				}
-				for(Long iid : insuranceIds) {
-					insuranceId=iid;
-				}
-				Optional<UserEntity> isUserPresent = userRepository.findById(userId);
-				if(isUserPresent.isPresent()) {
-					userEntity = isUserPresent.get();
-				}
-				else {
-					log.error("User not found.");
-					throw new UserRegisterException(404,"user Not found");
-				}
-				Optional<InsuranceCategoryEntity> isCategoryPresent = insuranceCategoryRepository.findById(insuranceId);
-				if(isCategoryPresent.isPresent()) {
-					categoryEntity = isCategoryPresent.get();
-				}
-				else {
-					log.error("Category not found.");
-					throw new UserRegisterException(404,"Category Not found");
-				}
-				insuranceStatusList.add(new InsuranceResponse(userEntity, categoryEntity, id,element.getMonthPeriod(),element.getStatus(),element.getClaimed()));
-			}				
-			return insuranceStatusList;
+			List<InsuranceCreateEntity> statusList =  insuranceCreateRepository.findByStatus(status);			
+			return getInsuranceList(statusList, id);
 			
 		}
 		else {
@@ -170,41 +112,9 @@ public class InsuranceCreateService implements IInsuranceCreateService{
 	public List<InsuranceResponse> getDataByMonth(String token, int month) {
 		long id = tokenUtil.decodeToken(token);
 		Optional<InsuranceCreateEntity> isDataPresent = insuranceCreateRepository.findById(id);
-		Long userId=0L;
-		Long insuranceId=0L;
-		UserEntity userEntity=null;
-		InsuranceCategoryEntity categoryEntity=null;
-		List<InsuranceResponse> insuranceMonthsList = new ArrayList<>();
 		if(isDataPresent.isPresent()) {
 			List<InsuranceCreateEntity> monthsList =  insuranceCreateRepository.findByMonthPeriod(month);
-			for(InsuranceCreateEntity element : monthsList) {
-				List<Long> userIds = element.getUserId();
-				List<Long> insuranceIds = element.getInsuranceId();
-				for(Long uid : userIds) {
-					userId=uid;
-				}
-				for(Long iid : insuranceIds) {
-					insuranceId=iid;
-				}
-				Optional<UserEntity> isUserPresent = userRepository.findById(userId);
-				if(isUserPresent.isPresent()) {
-					userEntity = isUserPresent.get();
-				}
-				else {
-					log.error("User not found.");
-					throw new UserRegisterException(404,"user Not found");
-				}
-				Optional<InsuranceCategoryEntity> isCategoryPresent = insuranceCategoryRepository.findById(insuranceId);
-				if(isCategoryPresent.isPresent()) {
-					categoryEntity = isCategoryPresent.get();
-				}
-				else {
-					log.error("Category not found.");
-					throw new UserRegisterException(404,"Category Not found");
-				}
-				insuranceMonthsList.add(new InsuranceResponse(userEntity, categoryEntity, id,element.getMonthPeriod(),element.getStatus(),element.getClaimed()));
-			}				
-			return insuranceMonthsList;
+			return getInsuranceList(monthsList, id);
 			
 		}
 		else {
@@ -298,41 +208,9 @@ public class InsuranceCreateService implements IInsuranceCreateService{
 	public List<InsuranceResponse> getInsuranceDataByClaim(String token, boolean claim) {
 		long id = tokenUtil.decodeToken(token);
 		Optional<InsuranceCreateEntity> isDataPresent = insuranceCreateRepository.findById(id);
-		Long userId=0L;
-		Long insuranceId=0L;
-		UserEntity userEntity=null;
-		InsuranceCategoryEntity categoryEntity=null;
-		List<InsuranceResponse> insuranceCreateList = new ArrayList<>();
 		if(isDataPresent.isPresent()) {
 			List<InsuranceCreateEntity> createEntity =insuranceCreateRepository.findByClaimed(claim);
-			for(InsuranceCreateEntity entity : createEntity) {
-				List<Long> userIds = entity.getUserId();
-				List<Long> insuranceIds = entity.getInsuranceId();
-				for(Long uid : userIds) {
-					userId=uid;
-				}
-				for(Long iid : insuranceIds) {
-					insuranceId=iid;
-				}
-				Optional<UserEntity> isUserPresent = userRepository.findById(userId);
-				if(isUserPresent.isPresent()) {
-					userEntity = isUserPresent.get();
-				}
-				else {
-					log.error("User not found.");
-					throw new UserRegisterException(404,"user Not found");
-				}
-				Optional<InsuranceCategoryEntity> isCategoryPresent = insuranceCategoryRepository.findById(insuranceId);
-				if(isCategoryPresent.isPresent()) {
-					categoryEntity = isCategoryPresent.get();
-				}
-				else {
-					log.error("Category not found.");
-					throw new UserRegisterException(404,"Category Not found");
-				}
-				insuranceCreateList.add(new InsuranceResponse(userEntity, categoryEntity, id,entity.getMonthPeriod(),entity.getStatus(),entity.getClaimed()));
-			}
-			return insuranceCreateList;
+			return getInsuranceList(createEntity, id);
 		}
 		else {
 			log.error("User not found");
@@ -364,5 +242,36 @@ public class InsuranceCreateService implements IInsuranceCreateService{
 			throw new UserRegisterException(404,"user Not found");
 		}
 	}
-
+	
+	public List<InsuranceResponse> getInsuranceList(List<InsuranceCreateEntity> entityList,long id) {
+		List<InsuranceResponse> insuranceCreateList = new ArrayList<>();
+		for(InsuranceCreateEntity entity : entityList) {
+			List<Long> userIds = entity.getUserId();
+			List<Long> insuranceIds = entity.getInsuranceId();
+			for(Long uid : userIds) {
+				userId=uid;
+			}
+			for(Long iid : insuranceIds) {
+				insuranceId=iid;
+			}
+			Optional<UserEntity> isUserPresent = userRepository.findById(userId);
+			if(isUserPresent.isPresent()) {
+				userEntity = isUserPresent.get();
+			}
+			else {
+				log.error("User not found.");
+				throw new UserRegisterException(404,"user Not found");
+			}
+			Optional<InsuranceCategoryEntity> isCategoryPresent = insuranceCategoryRepository.findById(insuranceId);
+			if(isCategoryPresent.isPresent()) {
+				categoryEntity = isCategoryPresent.get();
+			}
+			else {
+				log.error("Category not found.");
+				throw new UserRegisterException(404,"Category Not found");
+			}
+			insuranceCreateList.add(new InsuranceResponse(userEntity, categoryEntity, id,entity.getMonthPeriod(),entity.getStatus(),entity.getClaimed()));
+		}
+		return insuranceCreateList;
+	}
 }
