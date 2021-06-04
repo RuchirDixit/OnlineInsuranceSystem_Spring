@@ -243,6 +243,12 @@ public class InsuranceCreateService implements IInsuranceCreateService{
 		}
 	}
 	
+	/**
+	 * Logic to fetch data about user and insurance
+	 * @param entityList : List<InsuranceCreateEntity>
+	 * @param id : Id decoded from token
+	 * @return List<InsuranceResponse>
+	 */
 	public List<InsuranceResponse> getInsuranceList(List<InsuranceCreateEntity> entityList,long id) {
 		List<InsuranceResponse> insuranceCreateList = new ArrayList<>();
 		for(InsuranceCreateEntity entity : entityList) {
