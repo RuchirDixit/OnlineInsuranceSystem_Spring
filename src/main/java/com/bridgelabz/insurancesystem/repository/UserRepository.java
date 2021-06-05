@@ -1,5 +1,6 @@
 package com.bridgelabz.insurancesystem.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.internal.bytebuddy.description.NamedElement.WithOptionalName;
@@ -15,4 +16,18 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	 * @return : Optional<UserEntity>
 	 */
 	Optional<UserEntity> findByMobileNumber(Long mobileNumber);
+	
+	/**
+	 * To find user with health condition passed as parameter
+	 * @param health : To search for
+	 * @return : List<UserEntity>
+	 */
+	List<UserEntity> findByHealthCondition(String health);
+	
+	/**
+	 * To find user with vehicle data passed as parameter
+	 * @param vehicle : To search for
+	 * @return : List<UserEntity>
+	 */
+	List<UserEntity> findByVehicleData(String vehicle);
 }
