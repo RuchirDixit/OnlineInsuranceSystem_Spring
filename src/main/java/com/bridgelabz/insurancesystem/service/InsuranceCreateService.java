@@ -41,6 +41,7 @@ public class InsuranceCreateService implements IInsuranceCreateService{
 	@Autowired
 	ModelMapper modelMapper;
 	
+	// declaring global variables for global scope instead of local to avoid repeated code
 	Long userId=0L;
 	Long insuranceId=0L;
 	UserEntity userEntity=null;
