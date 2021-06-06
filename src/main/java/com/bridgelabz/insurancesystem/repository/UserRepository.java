@@ -1,5 +1,7 @@
 package com.bridgelabz.insurancesystem.repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,4 +32,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	 * @return : List<UserEntity>
 	 */
 	List<UserEntity> findByVehicleData(String vehicle);
+	
+	/**
+	 * To find users between passed start and end dates
+	 * @param localDateTime : From
+	 * @param localDateTime2 : To
+	 * @return : List<UserEntity>
+	 */
+	List<UserEntity> findByRegisteredDateBetween(LocalDateTime localDateTime,LocalDateTime localDateTime2);
+	
+	
 }

@@ -1,5 +1,6 @@
 package com.bridgelabz.insurancesystem.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bridgelabz.insurancesystem.dto.DateSearchDTO;
 import com.bridgelabz.insurancesystem.entity.InsuranceCategoryEntity;
 import com.bridgelabz.insurancesystem.entity.InsuranceCreateEntity;
 import com.bridgelabz.insurancesystem.entity.UserEntity;
@@ -183,6 +185,37 @@ public class AdminService implements IAdminService {
 		else {
 			log.error("Token not valid");
 			throw new UserRegisterException(400,"Token not valid");
+		}
+	}
+
+	/**
+	 * To get users who registered between mentioned dates
+	 * @param token : JWt with userid, DateSearchDTO : DTO with startDate and endDate as members
+	 * @return : List<UserEntity>
+	 */
+	@Override
+	public List<UserEntity> getUsersBetween(String token,DateSearchDTO dateSearchDTO) {
+		Long id = tokenUtil.decodeToken(token);
+		Optional<UserEntity> isContactPresent = userRepository.findById(id);
+		if(isContactPresent.isPresent()) {
+			return userRepository.findByRegisteredDateBetween(dateSearchDTO.getStartDate(),dateSearchDTO.getEndDate());
+		}
+		else {
+			log.error("User not found.");
+			throw new UserRegisterException(404,"User Not found");
+		}
+	}
+
+	@Override
+	public List<InsuranceCategoryEntity> getInsuranceWithDate(String token, DateSearchDTO dateSearchDTO) {
+		Long id = tokenUtil.decodeToken(token);
+		Optional<InsuranceCategoryEntity> isContactPresent = insuranceCategoryRepository.findById(id);
+		if(isContactPresent.isPresent()) {
+			return insuranceCategoryRepository.findByRegisteredDateBetween(dateSearchDTO.getStartDate(),dateSearchDTO.getEndDate());
+		}
+		else {
+			log.error("User not found.");
+			throw new UserRegisterException(404,"User Not found");
 		}
 	}
 }

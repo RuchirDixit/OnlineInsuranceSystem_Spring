@@ -1,7 +1,9 @@
 package com.bridgelabz.insurancesystem.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.bridgelabz.insurancesystem.dto.DateSearchDTO;
 import com.bridgelabz.insurancesystem.entity.InsuranceCategoryEntity;
 import com.bridgelabz.insurancesystem.entity.UserEntity;
 import com.bridgelabz.insurancesystem.util.InsuranceResponse;
@@ -25,5 +27,11 @@ public interface IAdminService {
 
 	// To get Insurance data with specified category
 	List<InsuranceCategoryEntity> getInsuranceForCategory(String token, String category);
+
+	// To get users between mentioned dates
+	List<UserEntity> getUsersBetween(String token, DateSearchDTO dateSearchDTO);
+
+	// To get insurance details between mentioned dates
+	List<InsuranceCategoryEntity> getInsuranceWithDate(String token, DateSearchDTO dateSearchDTO);
 
 }
