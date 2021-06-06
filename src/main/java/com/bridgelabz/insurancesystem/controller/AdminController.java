@@ -1,5 +1,7 @@
 package com.bridgelabz.insurancesystem.controller;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.insurancesystem.dto.DateSearchDTO;
 import com.bridgelabz.insurancesystem.dto.UserDTO;
 import com.bridgelabz.insurancesystem.entity.InsuranceCategoryEntity;
 import com.bridgelabz.insurancesystem.entity.UserEntity;
@@ -98,6 +101,34 @@ public class AdminController {
 	public ResponseEntity<List<?>> getInsuranceForCategory(@PathVariable String token,@RequestParam("category") String category){
 		log.debug("Get Insurance data for category: " + category);
 		List<InsuranceCategoryEntity> response = adminService.getInsuranceForCategory(token,category);
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+	
+	/**
+	 * To get all users between start and end dates mentioned
+	 * @param token : JWT with user_id
+	 * @param startDate : Range to search from
+	 * @param endDate : Range search to
+	 * @return : ResponseEntity<List<?>>
+	 */
+	@PostMapping("/getUserWithDate/{token}")
+	public ResponseEntity<List<?>> getUserWithDate(@PathVariable String token,@RequestBody DateSearchDTO dateSearchDTO){
+		log.debug("Get user between start date and end date");
+		List<UserEntity> response = adminService.getUsersBetween(token,dateSearchDTO);
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+	
+	/**
+	 * To get all insurance details between start and end dates mentioned
+	 * @param token : JWT with insurance id
+	 * @param startDate : Range to search from
+	 * @param endDate : Range search to
+	 * @return : ResponseEntity<List<?>>
+	 */
+	@PostMapping("/getInsuranceWithDate/{token}")
+	public ResponseEntity<List<?>> getInsuranceWithDate(@PathVariable String token,@RequestBody DateSearchDTO dateSearchDTO){
+		log.debug("Get user between start date and end date");
+		List<InsuranceCategoryEntity> response = adminService.getInsuranceWithDate(token,dateSearchDTO);
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 }
