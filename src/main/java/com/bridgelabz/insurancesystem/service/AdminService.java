@@ -206,6 +206,11 @@ public class AdminService implements IAdminService {
 		}
 	}
 
+	/**
+	 * To get insurance details who registered between mentioned dates
+	 * @param token : JWt with insurnceId, DateSearchDTO : DTO with startDate and endDate as members
+	 * @return : List<InsuranceCategoryEntity>
+	 */
 	@Override
 	public List<InsuranceCategoryEntity> getInsuranceWithDate(String token, DateSearchDTO dateSearchDTO) {
 		Long id = tokenUtil.decodeToken(token);
